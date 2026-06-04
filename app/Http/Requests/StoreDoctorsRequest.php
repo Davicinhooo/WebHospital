@@ -12,7 +12,7 @@ class StoreDoctorsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class StoreDoctorsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'specialty' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:doctors,email',
+            'license' => 'required|string|max:255|unique:doctors,license',
+            'years_of_experience' => 'required|string|max:255',
         ];
     }
 }

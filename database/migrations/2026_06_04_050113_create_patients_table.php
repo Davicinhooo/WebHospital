@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('date_of_birth');
             $table->string('gender');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('direction');
             $table->string('blood_type');
             $table->timestamps();

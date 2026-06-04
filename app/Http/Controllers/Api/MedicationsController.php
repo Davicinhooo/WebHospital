@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DiagnosticsResource;
+use App\Http\Resources\MedicationsResource;
+use App\Models\Medications;
 use Illuminate\Http\Request;
 
 class MedicationsController extends Controller
@@ -12,7 +15,8 @@ class MedicationsController extends Controller
      */
     public function index()
     {
-        //
+        $medications = Medications::all();
+        return MedicationsResource::collection($medications);
     }
 
     /**
@@ -20,7 +24,8 @@ class MedicationsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $medications = Medications::create($request->validated());
+        return new MedicationsResource($medications);
     }
 
     /**
@@ -28,7 +33,8 @@ class MedicationsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $medications = Medications::findOrFail($id);
+        return new MedicationsResource($medications);
     }
 
     /**
@@ -36,7 +42,9 @@ class MedicationsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $medications = Medications::findOrFail($id);
+        $medications->update($request->validated());
+        return new MedicationsResource($medications);
     }
 
     /**
@@ -44,6 +52,8 @@ class MedicationsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $medications = Medications::findOrFail($id);
+        $medications->delete();
+        return response()->json(null, 204);
     }
 }

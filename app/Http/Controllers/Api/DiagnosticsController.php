@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DiagnosticsResource;
+use App\Models\Diagnostics;
 use Illuminate\Http\Request;
 
 class DiagnosticsController extends Controller
@@ -12,7 +14,8 @@ class DiagnosticsController extends Controller
      */
     public function index()
     {
-        //
+        $diagnostics = Diagnostics::all();
+        return DiagnosticsResource::collection($diagnostics);
     }
 
     /**
@@ -20,7 +23,8 @@ class DiagnosticsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $diagnostics = Diagnostics::create($request->validated());
+        return new DiagnosticsResource($diagnostics);
     }
 
     /**
@@ -28,7 +32,8 @@ class DiagnosticsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $diagnostics = Diagnostics::findOrFail($id);
+        return new DiagnosticsResource($diagnostics);
     }
 
     /**
@@ -36,7 +41,9 @@ class DiagnosticsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $diagnostics = Diagnostics::findOrFail($id);
+        $diagnostics->update($request->validated());
+        return new DiagnosticsResource($diagnostics);
     }
 
     /**
@@ -44,6 +51,8 @@ class DiagnosticsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $diagnostics = Diagnostics::findOrFail($id);
+        $diagnostics->delete();
+        return response()->json(null, 204);
     }
 }

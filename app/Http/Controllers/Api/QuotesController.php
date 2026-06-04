@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\QuotesResource;
+use App\Models\Quotes;
 use Illuminate\Http\Request;
+use League\CommonMark\Extension\SmartPunct\Quote;
 
 class QuotesController extends Controller
 {
@@ -12,7 +15,8 @@ class QuotesController extends Controller
      */
     public function index()
     {
-        //
+        $quotes = Quotes::all();
+        return QuotesResource::collection($quotes);
     }
 
     /**
@@ -20,7 +24,8 @@ class QuotesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $quotes = Quotes::create($request->validated());
+        return new QuotesResource($quotes);
     }
 
     /**
@@ -28,7 +33,8 @@ class QuotesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $quotes = Quotes::findOrFail($id);
+        return new QuotesResource($quotes);
     }
 
     /**
@@ -36,7 +42,8 @@ class QuotesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $quotes = Quotes::findOrFail($id);
+        $quotes->update($request->validated());
     }
 
     /**
@@ -44,6 +51,8 @@ class QuotesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $quotes = Quotes::findOrFail($id);
+        $quotes->delete();
+        return response()->json(null, 204);
     }
 }

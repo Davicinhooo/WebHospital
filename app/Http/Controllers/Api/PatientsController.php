@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PatientsResource;
+use App\Models\Patients;
 use Illuminate\Http\Request;
 
 class PatientsController extends Controller
@@ -12,7 +14,8 @@ class PatientsController extends Controller
      */
     public function index()
     {
-        //
+        $patients = Patients::all();
+        return PatientsResource::collection($patients);
     }
 
     /**
@@ -20,7 +23,8 @@ class PatientsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $patients = Patients::create($request->validated());
+        return new PatientsResource($patients);
     }
 
     /**
@@ -28,7 +32,8 @@ class PatientsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $patients = Patients::findOrFail($id);
+        return new PatientsResource($patients);
     }
 
     /**
@@ -36,7 +41,9 @@ class PatientsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $patients = Patients::findOrFail($id);
+        $patients->update($request->validated());
+        return new PatientsResource($patients);
     }
 
     /**
@@ -44,6 +51,8 @@ class PatientsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $patients = Patients::findOrFail($id);
+        $patients->delete();
+        return response()->json(null, 204);
     }
 }

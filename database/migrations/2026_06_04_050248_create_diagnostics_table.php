@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('diagnostics', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->text('description');
             $table->datetime('date');
             $table->foreignId("patient_id")->constrained("patients")->onDelete('cascade');
             $table->foreignId('doctor_id')->constrained("doctors")->onDelete('cascade');
             $table->string("severity");
-            $table->string("recommendations");
+            $table->text("recommendations")->nullable();
             $table->string("type_diagnosis");
             $table->timestamps();
         });

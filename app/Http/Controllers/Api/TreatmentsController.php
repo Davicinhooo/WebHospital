@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TreatmentsResource;
+use App\Models\Treatments;
 use Illuminate\Http\Request;
 
 class TreatmentsController extends Controller
@@ -12,7 +14,8 @@ class TreatmentsController extends Controller
      */
     public function index()
     {
-        //
+        $treatments = Treatments::all();
+        return TreatmentsResource::collection($treatments);
     }
 
     /**
@@ -20,7 +23,8 @@ class TreatmentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $treatments = Treatments::create($request->validated());
+        return new TreatmentsResource($treatments);
     }
 
     /**
@@ -28,7 +32,8 @@ class TreatmentsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $treatments = Treatments::findOrFail($id);
+        return new TreatmentsResource($treatments);
     }
 
     /**
@@ -36,7 +41,9 @@ class TreatmentsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $treatments = Treatments::findOrFail($id);
+        $treatments->update($request->validated());
+        return new TreatmentsResource($treatments);
     }
 
     /**
@@ -44,6 +51,8 @@ class TreatmentsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $treatments = Treatments::findOrFail($id);
+        $treatments->delete();
+        return response()->json(null, 204);
     }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained("patients")->onDelete('cascade');
             $table->foreignId('doctor_id')->constrained("doctors")->onDelete('cascade');
             $table->string('status');
-            $table->string('observations')->nullable();
+            $table->text('observations')->nullable();
             $table->string('room');
             $table->timestamps();
         });

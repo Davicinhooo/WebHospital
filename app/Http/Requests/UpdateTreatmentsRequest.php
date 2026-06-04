@@ -12,7 +12,7 @@ class UpdateTreatmentsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class UpdateTreatmentsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'duration' => 'required|string|max:255',
+            'diagnostic_id' => 'required|exists:diagnostics,id',
+            'doctor_id' => 'required|exists:doctors,id',
+            'status' => 'required|string|max:255',
+            'administration_frequency' => 'required|string|max:255',
         ];
     }
 }

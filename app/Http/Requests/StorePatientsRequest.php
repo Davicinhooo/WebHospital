@@ -12,7 +12,7 @@ class StorePatientsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class StorePatientsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'gender' => 'required|string|max:255',
+            'phone' => 'required|string|max:255|unique:patients,phone',
+            'direction' => 'required|string|max:255',
+            'blood_type' => 'required|string|max:255',
         ];
     }
 }

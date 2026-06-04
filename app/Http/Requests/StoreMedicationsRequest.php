@@ -12,7 +12,7 @@ class StoreMedicationsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class StoreMedicationsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'dose' => 'required|string|max:255',
+            'frequency' => 'required|string|max:255',
+            'duration' => 'required|string|max:255',
+            'treatment_id' => 'required|exists:treatments,id',
+            'supplier' => 'required|string|max:255',
+            'side_effects' => 'required|string|max:255',
         ];
     }
 }
