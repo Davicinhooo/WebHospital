@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DiagnosticsResource;
 use App\Http\Resources\MedicationsResource;
 use App\Models\Medications;
+use App\Http\Requests\StoreMedicationsRequest;
+use App\Http\Requests\UpdateMedicationsRequest;
 use Illuminate\Http\Request;
 
 class MedicationsController extends Controller
@@ -22,7 +23,7 @@ class MedicationsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMedicationsRequest $request)
     {
         $medications = Medications::create($request->validated());
         return new MedicationsResource($medications);
@@ -40,7 +41,7 @@ class MedicationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMedicationsRequest $request, string $id)
     {
         $medications = Medications::findOrFail($id);
         $medications->update($request->validated());

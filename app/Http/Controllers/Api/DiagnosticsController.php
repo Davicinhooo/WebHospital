@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DiagnosticsResource;
 use App\Models\Diagnostics;
+use App\Http\Requests\StoreDiagnosticsRequest;
+use App\Http\Requests\UpdateDiagnosticsRequest;
 use Illuminate\Http\Request;
 
 class DiagnosticsController extends Controller
@@ -21,7 +23,7 @@ class DiagnosticsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDiagnosticsRequest $request)
     {
         $diagnostics = Diagnostics::create($request->validated());
         return new DiagnosticsResource($diagnostics);
@@ -39,7 +41,7 @@ class DiagnosticsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateDiagnosticsRequest $request, string $id)
     {
         $diagnostics = Diagnostics::findOrFail($id);
         $diagnostics->update($request->validated());

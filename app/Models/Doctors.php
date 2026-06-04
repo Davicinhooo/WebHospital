@@ -14,4 +14,14 @@ class Doctors extends Model
     {
         return $this->hasMany(Diagnostics::class, 'doctor_id');
     }
+
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'specialty',
+        'phone',
+        'email',
+        'license',
+        'years_of_experience',
+    ];
 }

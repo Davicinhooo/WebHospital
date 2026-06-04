@@ -25,4 +25,14 @@ class Diagnostics extends Model
         return $this->belongsTo(Doctors::class, 'doctor_id');
     }
 
+    protected $fillable = [
+        'description',
+        'date',
+        'patient_id',
+        'doctor_id',
+        "severity",
+        "recommendations",
+        "type_diagnosis"
+    ];
+
 }

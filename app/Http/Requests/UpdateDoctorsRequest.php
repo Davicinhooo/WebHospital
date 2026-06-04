@@ -30,7 +30,7 @@ class UpdateDoctorsRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:doctors,email ,' . $doctorId,
+            'email' => 'required|string|email|max:255|unique:doctors,email,' . $doctorId,
             'license' => 'required|string|max:255|unique:doctors,license,' . $doctorId,
             'years_of_experience' => 'required|string|max:255',
         ];

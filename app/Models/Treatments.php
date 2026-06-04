@@ -24,4 +24,14 @@ class Treatments extends Model
     {
         return $this->belongsTo(Doctors::class, 'doctor_id');
     }
+
+    protected $fillable = [
+        "name",
+        "description",
+        "duration",
+        "diagnostic_id",
+        "doctor_id",
+        "status",
+        "administration_frequency"
+    ];
 }

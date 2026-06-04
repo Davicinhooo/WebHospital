@@ -26,10 +26,10 @@ class StorePatientsRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
-            'gender' => 'required|string|max:255',
+            'gender' => 'required|in:Masculino,Femenino',
             'phone' => 'required|string|max:255|unique:patients,phone',
-            'direction' => 'required|string|max:255',
-            'blood_type' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'blood_type' => 'required|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
         ];
     }
 }

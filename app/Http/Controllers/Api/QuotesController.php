@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuotesResource;
+use App\Http\Requests\StoreQuotesRequest;
+use App\Http\Requests\UpdateQuotesRequest;
 use App\Models\Quotes;
 use Illuminate\Http\Request;
 use League\CommonMark\Extension\SmartPunct\Quote;
@@ -22,7 +24,7 @@ class QuotesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreQuotesRequest $request)
     {
         $quotes = Quotes::create($request->validated());
         return new QuotesResource($quotes);
@@ -40,10 +42,11 @@ class QuotesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateQuotesRequest $request, string $id)
     {
         $quotes = Quotes::findOrFail($id);
         $quotes->update($request->validated());
+        return new QuotesResource($quotes);
     }
 
     /**

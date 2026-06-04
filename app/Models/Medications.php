@@ -14,4 +14,14 @@ class Medications extends Model
     {
         return $this->belongsTo(Treatments::class, 'treatment_id');
     }
+
+    protected $fillable = [
+        'name',
+        "dose",
+        "frequency",
+        "duration",
+        "treatment_id",
+        "supplier",
+        "side_effects"
+    ];
 }

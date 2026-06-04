@@ -15,4 +15,14 @@ class Patients extends Model
         return $this->hasMany(Diagnostics::class, 'patient_id');
     }
 
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'date_of_birth',
+        'gender',
+        'phone',
+        'address',
+        'blood_type',
+    ];
+
 }

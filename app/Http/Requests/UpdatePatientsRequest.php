@@ -31,7 +31,7 @@ class UpdatePatientsRequest extends FormRequest
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|max:255',
             'phone' => 'required|string|max:255|unique:patients,phone,' . $patientId,
-            'direction' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'blood_type' => 'required|string|max:255',
         ];
     }

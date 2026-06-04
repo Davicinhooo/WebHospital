@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TreatmentsResource;
 use App\Models\Treatments;
+use App\Http\Requests\StoreTreatmentsRequest;
+use App\Http\Requests\UpdateTreatmentsRequest;
 use Illuminate\Http\Request;
 
 class TreatmentsController extends Controller
@@ -21,7 +23,7 @@ class TreatmentsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTreatmentsRequest $request)
     {
         $treatments = Treatments::create($request->validated());
         return new TreatmentsResource($treatments);
@@ -39,7 +41,7 @@ class TreatmentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTreatmentsRequest $request, string $id)
     {
         $treatments = Treatments::findOrFail($id);
         $treatments->update($request->validated());

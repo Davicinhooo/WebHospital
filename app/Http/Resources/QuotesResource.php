@@ -14,6 +14,15 @@ class QuotesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            "date" => $this->date,
+            'reason' => $this->reason,
+            'patient_id' => $this->patient_id,
+            'doctor_id' => $this->doctor_id,
+            'status' => $this->status,
+            'observations' => $this->observations,
+            'room' => $this->room,
+        ];
     }
 }

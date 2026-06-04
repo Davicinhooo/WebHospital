@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PatientsResource;
+use App\Http\Requests\StorePatientsRequest;
+use App\Http\Requests\UpdatePatientsRequest;
 use App\Models\Patients;
 use Illuminate\Http\Request;
 
@@ -21,7 +23,7 @@ class PatientsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePatientsRequest $request)
     {
         $patients = Patients::create($request->validated());
         return new PatientsResource($patients);
@@ -39,7 +41,7 @@ class PatientsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePatientsRequest $request, string $id)
     {
         $patients = Patients::findOrFail($id);
         $patients->update($request->validated());

@@ -19,4 +19,14 @@ class Quotes extends Model
     {
         return $this->belongsTo(Doctors::class, 'doctor_id');
     }
+
+    protected $fillable = [
+        'date',
+        'reason',
+        'patient_id',
+        'doctor_id',
+        'status',
+        'observations',
+        'room'
+    ];
 }
