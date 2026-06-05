@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request;    
 use Exception;
 
 class SocialController extends Controller
@@ -17,7 +17,7 @@ class SocialController extends Controller
 
     public function redirectToGithub()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver('github')->with(['prompt' => 'select_account'])->redirect();
     }
 
     // Manejo de la respuesta de GitHub (Callback)
@@ -51,7 +51,7 @@ class SocialController extends Controller
                 'name' => $githubUser->name ?? $githubUser->nickname,
                 'email' => $githubUser->email,
                 'github_id' => $githubUser->id,
-                'password' => encrypt('git_pass_random_123') // Contraseña aleatoria por seguridad
+                'password' => bcrypt('git_pass_random_123') // Contraseña aleatoria por seguridad
             ]);
 
             Auth::login($newUser);
@@ -68,7 +68,7 @@ class SocialController extends Controller
 
     public function redirectToGoogle()
     {
-    return Socialite::driver('google')->redirect();
+    return Socialite::driver('google')->with(['prompt' => 'select_account'])->redirect();
     }
 
     public function handleGoogleCallback()
@@ -101,14 +101,22 @@ class SocialController extends Controller
                 'name' => $googleUser->name ?? $googleUser->nickname,
                 'email' => $googleUser->email,
                 'google_id' => $googleUser->id,
-                'password' => encrypt('google_pass_random_123') // Contraseña aleatoria por seguridad
+                'password' => bcrypt('google_pass_random_123') // Contraseña aleatoria por seguridad
             ]);
 
             Auth::login($newUser);
             return redirect()->route('home');
 
         } catch (Exception $e) {
-            return redirect()->route('login')->with('error', 'Ocurrió un error al intentar conectar con Google.');
+            // Comentamos la redirección por ahora
+            // return redirect()->route('login')->with('error', 'Ocurrió un error...');
+            
+            // Forzamos a que imprima el error real en pantalla
+            dd([
+                'mensaje_de_error' => $e->getMessage(),
+                'linea' => $e->getLine(),
+                'archivo' => $e->getFile()
+            ]);
         }
     }
 }

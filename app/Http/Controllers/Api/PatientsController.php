@@ -14,10 +14,17 @@ class PatientsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patients::all();
-        return PatientsResource::collection($patients);
+        $buscar = $request->input('buscar');
+
+        // Si el usuario escribió algo en el buscador, filtramos. Si no, traemos todos.
+        $pacientes = Patients::when($buscar, function ($query, $buscar) {
+            return $query->where('first_name', 'LIKE', "%$buscar%")
+                         ->orWhere('last_name', 'LIKE', "%$buscar%");
+        })->get();
+
+        return view('pacientes.index', compact('pacientes', 'buscar'));
     }
 
     /**
@@ -25,8 +32,9 @@ class PatientsController extends Controller
      */
     public function store(StorePatientsRequest $request)
     {
-        $patients = Patients::create($request->validated());
-        return new PatientsResource($patients);
+        // El FormRequest ya validó todo automáticamente
+        Patients::create($request->validated());
+        return redirect()->route('pacientes.index')->with('success', 'Paciente agregado exitosamente.');
     }
 
     /**
@@ -43,18 +51,19 @@ class PatientsController extends Controller
      */
     public function update(UpdatePatientsRequest $request, string $id)
     {
-        $patients = Patients::findOrFail($id);
-        $patients->update($request->validated());
-        return new PatientsResource($patients);
+        $paciente = Patients::findOrFail($id);
+        $paciente->update($request->validated());
+        return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $patients = Patients::findOrFail($id);
-        $patients->delete();
-        return response()->json(null, 204);
+        $paciente = Patients::findOrFail($id);
+        $paciente->delete();
+
+        return redirect()->route('pacientes.index')->with('success', 'Paciente eliminado correctamente.');
     }
 }

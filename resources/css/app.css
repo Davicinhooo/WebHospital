@@ -1,9 +1,365 @@
-@import 'tailwindcss';
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* resources/css/app.css */
+:root {
+    --bg-color: #F9F9F9;
+    --surface: #FFFFFF;
+    --primary: #222222;
+    --secondary: #757575;
+    --border: #E0E0E0;
+    --hover: #EBEBEB;
+    --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--primary);
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--primary);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+}
+.btn:hover { background: var(--hover); }
+.btn-primary {
+    background: var(--primary);
+    color: var(--surface);
+    border-color: var(--primary);
+}
+.btn-primary:hover { background: #444444; }
+
+/* SOCIAL BUTTONS (Base) */
+.btn-social {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    box-sizing: border-box;
+    
+    /* Esta línea es la magia: hace que cualquier cambio sea suave (0.3 segundos) */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+
+/* Efecto de "presión" al hacer clic (funciona para ambos) */
+.btn-social:active {
+    transform: scale(0.98) translateY(2px); /* El botón se encoge y baja ligeramente */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* BOTÓN GOOGLE */
+.btn-google {
+    background-color: #DB4437;
+    color: #FFFFFF;
+    border: 1px solid #DB4437;
+}
+.btn-google:hover {
+    background-color: #C53929;
+    border-color: #C53929;
+    transform: translateY(-4px); /* Se eleva 4 pixeles */
+    /* Sombra difuminada de color rojo Google */
+    box-shadow: 0 8px 15px rgba(219, 68, 55, 0.35); 
+}
+
+/* BOTÓN GITHUB */
+.btn-github {
+    background-color: #24292E;
+    color: #FFFFFF;
+    border: 1px solid #24292E;
+}
+.btn-github:hover {
+    background-color: #1B1F23;
+    border-color: #1B1F23;
+    transform: translateY(-4px); /* Se eleva 4 pixeles */
+    /* Sombra difuminada de color gris oscuro */
+    box-shadow: 0 8px 15px rgba(36, 41, 46, 0.35); 
+}
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px; /* Un poco menos de padding vertical para estilizar */
+    background-color: #E0F7FA; /* Color Cyan Pastel muy elegante */
+    border-bottom: 1px solid #B2EBF2; /* Borde sutilmente más oscuro que el fondo */
+}
+.header-right { 
+    display: flex; 
+    align-items: center; /* Esto asegura la alineación vertical perfecta */
+    gap: 20px; /* Espacio uniforme entre el saludo y el botón */
+}
+.logo a { 
+    font-size: 24px; 
+    font-weight: bold; 
+    letter-spacing: 1px; 
+    color: #006064; /* Un tono cyan/teal oscuro para el texto del logo que haga contraste */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.logo a:hover { color: #00838F; }
+
+/* CONTENEDORES PRINCIPALES */
+.welcome-container { max-width: 800px; margin: 80px auto; text-align: center; padding: 40px; }
+.welcome-container h1 { font-size: 48px; margin-bottom: 20px; }
+.welcome-container p { font-size: 18px; color: var(--secondary); line-height: 1.6; }
+
+.auth-container {
+    max-width: 400px;
+    margin: 80px auto;
+    background: var(--surface);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+}
+.auth-container h2 { margin-top: 0; margin-bottom: 25px; text-align: center; }
+
+/* FORMULARIOS */
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0;
+    color: var(--secondary);
+    font-size: 12px;
+    font-weight: 600; /* Le da un poco más de presencia al texto */
+}
+
+.divider::before, 
+.divider::after {
+    content: "";
+    flex: 1; /* Hace que las líneas ocupen todo el espacio sobrante */
+    height: 1px;
+    background: var(--border);
+}
+
+.divider::before {
+    margin-right: 15px; /* Espacio entre la línea izquierda y el texto */
+}
+
+.divider::after {
+    margin-left: 15px; /* Espacio entre el texto y la línea derecha */
+}
+
+/* GESTOR / DASHBOARD Y TARJETAS */
+.dashboard-container { padding: 40px; max-width: 1200px; margin: 0 auto; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+
+.grid-modules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Obliga a tener 3 columnas exactas */
+    gap: 25px;
+    margin-bottom: 40px;
+    max-width: 1000px; /* Limita el ancho para que no se estiren demasiado */
+    margin-left: auto; /* Centra el bloque entero horizontalmente */
+    margin-right: auto;
+}
+
+/* Para que sea responsive y no se rompa si lo ves en un monitor pequeño */
+@media (max-width: 900px) {
+    .grid-modules { grid-template-columns: repeat(2, 1fr); }
+}
+
+.module-card {
+    background: var(--surface);
+    padding: 25px 20px;
+    border-radius: 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--primary); /* Línea superior elegante por defecto */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    color: var(--primary);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Toques de color elegantes para cada módulo al pasar el ratón */
+.card-pacientes:hover { border-top-color: #2C3E50; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(44, 62, 80, 0.1); }
+.card-medicos:hover { border-top-color: #34495E; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(52, 73, 94, 0.1); }
+.card-citas:hover { border-top-color: #16A085; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(22, 160, 133, 0.1); }
+.card-diagnosticos:hover { border-top-color: #D35400; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(211, 84, 0, 0.1); }
+.card-tratamientos:hover { border-top-color: #2980B9; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(41, 128, 185, 0.1); }
+.card-medicamentos:hover { border-top-color: #8E44AD; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(142, 68, 173, 0.1); }
+
+.module-card h3 { margin: 0; font-size: 18px; }
+.module-card p { margin: 0; font-size: 14px; color: var(--secondary); line-height: 1.5; }
+.module-icon { font-size: 28px; margin-bottom: 5px; }
+
+.table-container { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 25px; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+th { background-color: var(--bg-color); color: var(--secondary); font-weight: 600; }
+
+/* =========================================
+   ESTILOS DE LA LANDING PAGE (WELCOME)
+   ========================================= */
+
+/* Animaciones de aparición suave */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0; /* Inicia oculto para que la animación lo revele */
+}
+
+/* Retrasos para que los elementos aparezcan uno tras otro */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+/* Sección Principal (Hero) */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+}
+.hero-content { flex: 1; }
+.hero-content h1 { font-size: 54px; color: #006064; margin-bottom: 20px; line-height: 1.2; }
+.hero-content p { font-size: 18px; color: var(--secondary); margin-bottom: 30px; line-height: 1.6; }
+.hero-image { flex: 1; text-align: center; }
+.hero-image img { 
+    width: 100%; 
+    max-width: 550px; 
+    border-radius: 20px; 
+    box-shadow: 0 20px 40px rgba(0,96,100,0.15); 
+    object-fit: cover; 
+    height: 400px;
+}
+
+/* Sección de Servicios */
+.services-section {
+    background-color: var(--surface);
+    padding: 80px 40px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto 0;
+}
+.service-card {
+    padding: 40px 30px;
+    border-radius: 16px;
+    background: var(--bg-color);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,96,100,0.08);
+    border-color: #B2EBF2;
+}
+.service-icon { font-size: 45px; margin-bottom: 20px; }
+.service-card h3 { color: #006064; margin-bottom: 15px; font-size: 22px; }
+
+/* Pie de página */
+.footer {
+    background-color: #006064; /* Cyan muy oscuro para cerrar el diseño */
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+/* =========================================
+   MEDIDOR DE SEGURIDAD DE CONTRASEÑA
+   ========================================= */
+   .password-strength-container {
+    margin-top: 8px;
+}
+
+.strength-bar-bg {
+    width: 100%;
+    height: 4px;
+    background-color: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0;
+    transition: all 0.3s ease-in-out; /* Animación suave al llenarse */
+    border-radius: 2px;
+}
+
+.strength-text {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+    transition: color 0.3s ease;
+}
+
+/* Colores Dinámicos */
+.strength-weak { background-color: #DB4437; } /* Rojo */
+.text-weak { color: #DB4437; }
+
+.strength-medium { background-color: #F4B400; } /* Amarillo */
+.text-medium { color: #F4B400; }
+
+.strength-strong { background-color: #0F9D58; } /* Verde */
+.text-strong { color: #0F9D58; }
+
+/* =========================================
+   MODALES (POPUPS)
+   ========================================= */
+   .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+    opacity: 0; visibility: hidden;
+    transition: all 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+
+.modal-content {
+    background: var(--surface);
+    width: 100%; max-width: 600px;
+    border-radius: 12px; padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h3 { margin: 0; color: #006064; font-size: 20px; }
+.btn-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--secondary); }
+.btn-close:hover { color: #DB4437; }
