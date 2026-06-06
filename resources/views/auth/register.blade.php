@@ -5,7 +5,7 @@
     <h2>Crear Cuenta</h2>
     @if ($errors->any())
     <div style="color: red; margin-bottom: 15px; border: 1px solid red; padding: 10px; border-radius: 5px;">
-        <strong>¡Ups! Hay un problema:</strong>
+        <strong>¡Ups! Hubo problema:</strong>
         <ul style="margin-top: 5px; margin-bottom: 0;">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
