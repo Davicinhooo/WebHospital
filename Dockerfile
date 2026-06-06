@@ -16,16 +16,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# 1. Copiar solo archivos de dependencias para aprovechar caché
-COPY composer.json composer.lock ./
+# 1. Copiamos TODOS los archivos primero
+COPY . .
+
+# 2. Ahora sí instalamos dependencias (ya que 'artisan' está presente, no fallará)
 RUN composer install --no-dev --optimize-autoloader
 
-# 2. Copiar archivos de Node y hacer clean install (más rápido y seguro)
-COPY package.json package-lock.json ./
+# 3. Instalamos frontend
 RUN npm ci && npm run build
-
-# 3. Copiar el resto del código
-COPY . .
 
 # Permisos
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
