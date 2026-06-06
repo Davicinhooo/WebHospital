@@ -1,0 +1,6 @@
+{
+    "The email has already been taken.": "Este correo ya está registrado.",
+    "The password field is required.": "La contraseña es obligatoria.",
+    "The password must be at least 8 characters.": "La contraseña debe tener al menos 8 caracteres.",
+    "The password confirmation does not match.": "Las contraseñas no coinciden."
+}
