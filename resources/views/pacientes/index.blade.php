@@ -16,10 +16,10 @@
             
             <div style="display: flex; gap: 15px; align-items: center;">
                 
-                <div style="display: flex; align-items: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); overflow: hidden;">
-                    <span style="padding: 8px 12px; color: var(--secondary); font-size: 14px;">🔍</span>
-                    <input type="text" placeholder="Buscar paciente..." style="border: none; padding: 10px 10px 10px 0; outline: none; background: transparent; font-family: var(--font-main); font-size: 14px; width: 220px; color: var(--primary);">
-                </div>
+                <form action="{{ route('pacientes.index') }}" method="GET" style="display: flex; align-items: center; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-color); overflow: hidden; margin: 0;">
+                <button type="submit" style="background: none; border: none; padding: 8px 12px; color: var(--secondary); font-size: 14px; cursor: pointer;">🔍</button>
+                <input type="text" name="buscar" value="{{ $buscar ?? '' }}" placeholder="Buscar paciente..." style="border: none; padding: 10px 10px 10px 0; outline: none; background: transparent; font-family: var(--font-main); font-size: 14px; width: 220px; color: var(--primary);">
+                </form>
 
                 <button type="button" class="btn btn-primary" onclick="openModal('modal-create')">Agregar Nuevo Paciente</button>
             </div>
@@ -60,12 +60,12 @@
                             data-phone="{{ $paciente->phone }}"
                             data-address="{{ $paciente->address }}"
                             data-blood="{{ $paciente->blood_type }}"
-                            onclick="openEditModal(this)">
+                            onclick="openEditPatientsModal(this)">
                             Editar
                         </button>
                         
                         <button type="button" class="btn" style="padding: 5px 10px; font-size: 12px; color: #D35400; border-color: #D35400; background: #FDEDEC;" 
-                            onclick="openDeleteModal({{ $paciente->id }})">
+                            onclick="openDeletePatientsModal({{ $paciente->id }})">
                             Eliminar
                         </button>
                     </td>
@@ -74,9 +74,14 @@
                 @empty
                 <tr>
                     <td colspan="9" style="text-align: center; padding: 40px 20px; color: var(--secondary);">
-                        <div style="font-size: 40px; margin-bottom: 10px;">📭</div>
+                        @if(isset($buscar) && $buscar != '')
+                        <div style="font-size: 16px; font-weight: 600;">No se encontró ningún paciente con "{{ $buscar }}"</div>
+                        <div style="font-size: 14px; margin-top: 5px;">Revisa la ortografía.</div>
+                        <a href="{{ route('pacientes.index') }}" class="btn" style="margin-top: 15px; display: inline-block;">Ver todos los pacientes</a>
+                        @else
                         <div style="font-size: 16px; font-weight: 600;">No hay pacientes registrados</div>
                         <div style="font-size: 14px; margin-top: 5px;">Haz clic en "Agregar Nuevo Paciente" para comenzar.</div>
+                        @endif
                     </td>
                 </tr>
                 @endforelse

@@ -3,58 +3,61 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MedicationsResource;
 use App\Models\Medications;
+use App\Models\Treatments; 
 use App\Http\Requests\StoreMedicationsRequest;
 use App\Http\Requests\UpdateMedicationsRequest;
 use Illuminate\Http\Request;
 
 class MedicationsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $medications = Medications::all();
-        return MedicationsResource::collection($medications);
+        $buscar = $request->input('buscar');
+
+        // 1. Traemos medicaciones y su tratamiento asociado
+        $medicaciones = Medications::with(['treatment'])
+            ->when($buscar, function ($query, $buscar) {
+                // Buscamos por el nombre del medicamento
+                $query->where('name', 'LIKE', "%$buscar%")
+                // O buscamos en la tabla de Tratamientos conectada
+                ->orWhereHas('treatment', function ($q) use ($buscar) {
+                    $q->where('name', 'LIKE', "%$buscar%");
+                });
+            })->get();
+
+        // 2. Traemos los tratamientos para llenar los <select> de los modales
+        $tratamientos = Treatments::all();
+
+        // 3. Enviamos a la vista
+        return view('medicaciones.index', compact('medicaciones', 'tratamientos', 'buscar'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreMedicationsRequest $request)
     {
-        $medications = Medications::create($request->validated());
-        return new MedicationsResource($medications);
+        Medications::create($request->validated());
+        return redirect()->route('medicaciones.index')->with('success', 'Medicación registrada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $medications = Medications::findOrFail($id);
-        return new MedicationsResource($medications);
+        $medicacion = Medications::findOrFail($id);
+        return response()->json($medicacion);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateMedicationsRequest $request, string $id)
     {
-        $medications = Medications::findOrFail($id);
-        $medications->update($request->validated());
-        return new MedicationsResource($medications);
+        $medicacion = Medications::findOrFail($id);
+        $medicacion->update($request->validated());
+        
+        return redirect()->route('medicaciones.index')->with('success', 'Medicación actualizada exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $medications = Medications::findOrFail($id);
-        $medications->delete();
-        return response()->json(null, 204);
+        $medicacion = Medications::findOrFail($id);
+        $medicacion->delete();
+        
+        return redirect()->route('medicaciones.index')->with('success', 'Medicación eliminada del sistema.');
     }
 }

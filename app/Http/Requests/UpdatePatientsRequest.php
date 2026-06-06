@@ -23,14 +23,12 @@ class UpdatePatientsRequest extends FormRequest
     public function rules(): array
     {
 
-        $patientId = $this->route("patient");
-
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|max:255',
-            'phone' => 'required|string|max:255|unique:patients,phone,' . $patientId,
+            'phone' => 'required|string|max:255|',
             'address' => 'required|string|max:255',
             'blood_type' => 'required|string|max:255',
         ];

@@ -23,15 +23,15 @@ class UpdateDoctorsRequest extends FormRequest
     public function rules(): array
     {
 
-        $doctorId = $this->route("doctor");
+        $medicoId = $this->route("medico");
 
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'specialty' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:doctors,email,' . $doctorId,
-            'license' => 'required|string|max:255|unique:doctors,license,' . $doctorId,
+            'email' => 'required|string|email|max:255|unique:doctors,email,' . $medicoId,
+            'license' => 'required|string|max:255|unique:doctors,license,' . $medicoId,
             'years_of_experience' => 'required|string|max:255',
         ];
     }

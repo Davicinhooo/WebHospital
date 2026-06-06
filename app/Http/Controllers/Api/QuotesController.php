@@ -3,22 +3,44 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\QuotesResource;
+use App\Models\Quotes;
+use App\Models\Doctors; 
+use App\Models\Patients; 
 use App\Http\Requests\StoreQuotesRequest;
 use App\Http\Requests\UpdateQuotesRequest;
-use App\Models\Quotes;
 use Illuminate\Http\Request;
-use League\CommonMark\Extension\SmartPunct\Quote;
 
 class QuotesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $quotes = Quotes::all();
-        return QuotesResource::collection($quotes);
+        $buscar = $request->input('buscar');
+
+        // 1. Traemos las citas y hacemos "Eager Loading" (with) de los pacientes y doctores 
+        // para ahorrar consultas a la base de datos.
+        $citas = Quotes::with(['patient', 'doctor'])
+            ->when($buscar, function ($query, $buscar) {
+                // Buscamos en la tabla Pacientes conectada
+                return $query->whereHas('patient', function ($q) use ($buscar) {
+                    $q->where('first_name', 'LIKE', "%$buscar%")
+                      ->orWhere('last_name', 'LIKE', "%$buscar%");
+                })
+                // O buscamos en la tabla Médicos conectada
+                ->orWhereHas('doctor', function ($q) use ($buscar) {
+                    $q->where('first_name', 'LIKE', "%$buscar%")
+                      ->orWhere('last_name', 'LIKE', "%$buscar%");
+                });
+            })->get();
+
+        // 2. Traemos todos los registros para llenar los <select> de los modales
+        $pacientes = Patients::all();
+        $medicos = Doctors::all();
+
+        // 3. Enviamos todo a la vista
+        return view('citas.index', compact('citas', 'pacientes', 'medicos', 'buscar'));
     }
 
     /**
@@ -26,8 +48,10 @@ class QuotesController extends Controller
      */
     public function store(StoreQuotesRequest $request)
     {
-        $quotes = Quotes::create($request->validated());
-        return new QuotesResource($quotes);
+        Quotes::create($request->validated());
+        
+        // Redirigimos a la web con un mensaje de éxito, igual que en Médicos
+        return redirect()->route('citas.index')->with('success', 'Cita programada correctamente.');
     }
 
     /**
@@ -35,8 +59,9 @@ class QuotesController extends Controller
      */
     public function show(string $id)
     {
-        $quotes = Quotes::findOrFail($id);
-        return new QuotesResource($quotes);
+        // El show casi no se usa con modales, pero lo dejamos listo
+        $cita = Quotes::findOrFail($id);
+        return response()->json($cita);
     }
 
     /**
@@ -44,9 +69,10 @@ class QuotesController extends Controller
      */
     public function update(UpdateQuotesRequest $request, string $id)
     {
-        $quotes = Quotes::findOrFail($id);
-        $quotes->update($request->validated());
-        return new QuotesResource($quotes);
+        $cita = Quotes::findOrFail($id);
+        $cita->update($request->validated());
+        
+        return redirect()->route('citas.index')->with('success', 'Cita actualizada correctamente.');
     }
 
     /**
@@ -54,8 +80,9 @@ class QuotesController extends Controller
      */
     public function destroy(string $id)
     {
-        $quotes = Quotes::findOrFail($id);
-        $quotes->delete();
-        return response()->json(null, 204);
+        $cita = Quotes::findOrFail($id);
+        $cita->delete();
+        
+        return redirect()->route('citas.index')->with('success', 'Cita cancelada y eliminada.');
     }
 }

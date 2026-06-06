@@ -32,7 +32,6 @@ class PatientsController extends Controller
      */
     public function store(StorePatientsRequest $request)
     {
-        // El FormRequest ya validó todo automáticamente
         Patients::create($request->validated());
         return redirect()->route('pacientes.index')->with('success', 'Paciente agregado exitosamente.');
     }

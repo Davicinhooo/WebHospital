@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('date_of_birth');
             $table->enum('gender', ['Masculino', 'Femenino']);
-            $table->string('phone')->unique();
+            $table->string('phone');
             $table->string('address');
             $table->enum('blood_type', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
             $table->timestamps();

@@ -14,10 +14,16 @@ class DoctorsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = Doctors::all();
-        return DoctorsResource::collection($doctors);
+        $buscar = $request->input('buscar');
+
+        $medicos = Doctors::when($buscar, function ($query, $buscar) {
+            return $query->where('first_name', 'LIKE', "%$buscar%")
+                         ->orWhere('last_name', 'LIKE', "%$buscar%");
+        })->get();
+
+        return view('medicos.index', compact('medicos', 'buscar'));
     }
 
     /**
@@ -25,8 +31,8 @@ class DoctorsController extends Controller
      */
     public function store(StoreDoctorsRequest $request)
     {
-        $doctors = Doctors::create($request->validated());
-        return new DoctorsResource($doctors);
+        Doctors::create($request->validated());
+        return redirect()->route('medicos.index')->with('success', 'Medico agregado exitosamente.');
     }
 
     /**
@@ -43,9 +49,9 @@ class DoctorsController extends Controller
      */
     public function update(UpdateDoctorsRequest $request, string $id)
     {
-        $doctors = Doctors::findOrFail($id);
-        $doctors->update($request->validated());
-        return new DoctorsResource($doctors);
+        $medico = Doctors::findOrFail($id);
+        $medico->update($request->validated());
+        return redirect()->route('medicos.index')->with('success', 'Medico actualizado correctamente.');
     }
 
     /**
@@ -53,8 +59,32 @@ class DoctorsController extends Controller
      */
     public function destroy(string $id)
     {
-        $doctors = Doctors::findOrFail($id);
-        $doctors->delete();
-        return response()->json(null, 204);
+        $medico = Doctors::findOrFail($id);
+        $medico->delete();
+
+        return redirect()->route('medicos.index')->with('success', 'Medico eliminado correctamente.');
     }
+
+    public function generarLicencia()
+    {
+    $licenciaUnica = false;
+    $codigo = '';
+
+    // El bucle do-while seguirá generando códigos hasta encontrar uno que NO exista en la base de datos
+    do {
+        // Genera un código tipo: MED-74892
+        $codigo = 'MED-' . rand(10000, 99999);
+        
+        // Verifica en tu modelo si ya existe ese código
+        $existe = Doctors::where('license', $codigo)->exists();
+        
+        if (!$existe) {
+            $licenciaUnica = true; // Si no existe, rompemos el bucle
+        }
+    } while (!$licenciaUnica);
+
+    // Devuelve el código libre al JavaScript
+    return response()->json(['licencia' => $codigo]);
+    }
+
 }

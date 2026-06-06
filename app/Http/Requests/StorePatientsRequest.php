@@ -27,7 +27,7 @@ class StorePatientsRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:Masculino,Femenino',
-            'phone' => 'required|string|max:255|unique:patients,phone',
+            'phone' => 'required|string|max:255|',
             'address' => 'required|string|max:255',
             'blood_type' => 'required|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
         ];

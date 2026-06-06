@@ -363,3 +363,14 @@ th { background-color: var(--bg-color); color: var(--secondary); font-weight: 60
 .modal-header h3 { margin: 0; color: #006064; font-size: 20px; }
 .btn-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--secondary); }
 .btn-close:hover { color: #DB4437; }
+
+/* ALINEACIÓN Y BORDES PARA TODAS LAS TABLAS DEL SISTEMA */
+.table-container table td {
+    border-bottom: 1px solid var(--border) !important;
+    padding: 12px 15px; 
+    vertical-align: middle; 
+}
+
+.table-container table tr:last-child td {
+    border-bottom: none !important; 
+}
