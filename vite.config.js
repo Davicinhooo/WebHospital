@@ -20,6 +20,19 @@ export default defineConfig({
             },
         }),
     ],
+
+    server: {
+        host: "0.0.0.0",
+        port: 5173,
+        hmr: {
+            host: "webhospital.ddev.site",
+            protocol: "wss",
+            clientPort: 443,
+            },
+
+            origin: "https://webhospital.ddev.site:5173",
+           },
+
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',
